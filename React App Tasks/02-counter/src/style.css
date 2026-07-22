@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* new Date(date.getTime() + 24 * 60 * 60 * 1000) */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.display {
+  min-width: 80px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn {
+  margin: 10px;
+  padding: 8px 18px;
+  font-size: 16px;
+  background-color: transparent;
+  border: 2px solid;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.btn-red {
+  color: #e63946;
+  border-color: #e63946;
+}
+.btn-red:hover {
+  background-color: #e63946;
+  color: #fff;
+}
+
+.btn-green {
+  color: #2a9d8f;
+  border-color: #2a9d8f;
+}
+.btn-green:hover {
+  background-color: #2a9d8f;
+  color: #fff;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
