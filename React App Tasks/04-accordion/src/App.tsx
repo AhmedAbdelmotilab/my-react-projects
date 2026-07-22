@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const faqs = [
   {
     title: "Where are these chairs assembled?",
@@ -12,14 +14,43 @@ const faqs = [
     text: "Ultimately, the primary goal of any design system is to facilitate seamless interaction between the user and the underlying technology.",
   },
 ];
-function Accordion() {
+function AccordionItems({
+  num,
+  title,
+  text,
+}: {
+  num: number;
+  title: string;
+  text: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  function handelToggle() {
+    setIsOpen((isOpen) => !isOpen);
+  }
+  return (
+    <div className={`item ${isOpen ? "open" : ""}`} onClick={handelToggle}>
+      <p className="number ">{num < 9 ? `0${num}` : num}</p>
+      <p className="title">{title}</p>
+      <p className="icon">{isOpen ? "-" : "+"}</p>
+      {isOpen ? <div className="content-box">{text}</div> : ""}
+    </div>
+  );
+}
+function Accordion({ data }: { data: typeof faqs }) {
   return (
     <div className="accordion">
-      <div className="item">Item</div>
+      {faqs.map((item, index) => (
+        <AccordionItems
+          num={index + 1}
+          title={item.title}
+          text={item.text}
+          key={item.title}
+        />
+      ))}
     </div>
   );
 }
 function App() {
-  return <Accordion />;
+  return <Accordion data={faqs} />;
 }
 export default App;
