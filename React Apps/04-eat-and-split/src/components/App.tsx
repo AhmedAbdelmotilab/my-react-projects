@@ -82,6 +82,7 @@ function App() {
         <SplitTheBill
           selectedOne={selectedFriend}
           handelSplitBill={handelSplitBill}
+          key={selectedFriend.id}
         />
       )}
     </div>
