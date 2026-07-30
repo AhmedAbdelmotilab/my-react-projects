@@ -2,8 +2,9 @@ import IWatchedMovie from "../../../Interfaces/IWatchedMovie";
 
 interface WatchedMovieProps {
   movie: IWatchedMovie;
+  handelDeleteWatchedMovie: (id: string) => void;
 }
-function WatchedMovie({ movie }: WatchedMovieProps) {
+function WatchedMovie({ movie, handelDeleteWatchedMovie }: WatchedMovieProps) {
   return (
     <li key={movie.imdbID}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -19,8 +20,14 @@ function WatchedMovie({ movie }: WatchedMovieProps) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{movie.runtime} min</span>
+          <span>{movie.Runtime}</span>
         </p>
+        <button
+          className="btn-delete"
+          onClick={() => movie.imdbID && handelDeleteWatchedMovie(movie.imdbID)}
+        >
+          X
+        </button>
       </div>
     </li>
   );

@@ -1,16 +1,18 @@
-import WatchedMovie from "../../../Interfaces/IWatchedMovie";
+import IWatchedMovie from "../../../Interfaces/IWatchedMovie";
 
 interface WatchedSummaryProps {
-  watched: WatchedMovie[];
+  watched: IWatchedMovie[];
 }
 // Average Calculation
 const average = (arr: number[]) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function WatchedSummary({ watched }: WatchedSummaryProps) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const avgImdbRating = average(watched.map((movie) => movie?.imdbRating ?? 0));
+  const avgUserRating = average(watched.map((movie) => movie?.userRating ?? 0));
+  const avgRuntime = average(
+    watched.map((movie) => Number(movie.Runtime?.split(" ").at(0)) || 0),
+  );
 
   return (
     <div className="summary">
@@ -22,15 +24,15 @@ function WatchedSummary({ watched }: WatchedSummaryProps) {
         </p>
         <p>
           <span>⭐️</span>
-          <span>{avgImdbRating}</span>
+          <span>{avgImdbRating.toFixed(1)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{avgUserRating}</span>
+          <span>{avgUserRating.toFixed(1)}</span>
         </p>
         <p>
           <span>⏳</span>
-          <span>{avgRuntime} min</span>
+          <span>{avgRuntime.toFixed(0)} min</span>
         </p>
       </div>
     </div>

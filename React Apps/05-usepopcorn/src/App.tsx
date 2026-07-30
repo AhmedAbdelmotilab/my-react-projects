@@ -1,75 +1,110 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BoxComponent from "./components/Box/BoxComponent";
+import ErrorMessage from "./components/Box/Error";
+import Loader from "./components/Box/Loader";
 import Main from "./components/Main/Main";
 import MovieList from "./components/Main/MoviesBoxComponents/MovieList";
+import MovieDetails from "./components/Main/WatchedBoxComponents/MovieDetails";
 import WatchedMovieList from "./components/Main/WatchedBoxComponents/WatchedMovieList";
 import WatchedSummary from "./components/Main/WatchedBoxComponents/WatchedSummary";
 import Logo from "./components/Navbar/Logo";
 import NavBar from "./components/Navbar/NavBar";
 import NumResults from "./components/Navbar/NumResults";
 import Search from "./components/Navbar/Search";
-const tempMovieData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0133093",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt6751668",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-  },
-];
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
+import IWatchedMovie from "./Interfaces/IWatchedMovie";
+// http://www.omdbapi.com/?apikey=[yourkey]&s=Batman
+
+const KEY = "d2823662";
 function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState<IWatchedMovie[]>([]);
+  const [query, setQuery] = useState("Batman");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
+  function handelSelectMovieId(id: string) {
+    setSelectedMovieId((selectedMovieId) =>
+      id === selectedMovieId ? null : id,
+    );
+  }
+  function handelCloseMovieDetails() {
+    setSelectedMovieId(null);
+  }
+  function handelSetWatched(movie: IWatchedMovie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
+  function handelDeleteWatchedMovie(id: string) {
+    setWatched((watched) => watched.filter((m) => m.imdbID !== id));
+  }
+  useEffect(() => {
+    const controller = new AbortController();
+    async function FetchData() {
+      try {
+        setIsLoading(true);
+        setErrorMessage("");
+        const res = await fetch(
+          ` http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+          { signal: controller.signal },
+        );
+        if (!res.ok) throw new Error("Something Went Wrong");
+        const data = await res.json();
+        if (data.Response === "False") throw new Error("No Movie Founded");
+        setMovies(data.Search);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        setErrorMessage(errorMessage);
+      } finally {
+        setIsLoading(false);
+        setErrorMessage("");
+      }
+    }
+    if (query.length < 3) {
+      setMovies([]);
+      setErrorMessage("");
+      return;
+    }
+    handelCloseMovieDetails();
+    FetchData();
+    return function () {
+      controller.abort();
+    };
+  }, [query]);
+
   return (
     <>
       <NavBar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
       <Main>
         <BoxComponent>
-          <MovieList movies={movies} />
+          {errorMessage ? (
+            <ErrorMessage errorMessage={errorMessage} />
+          ) : isLoading ? (
+            <Loader />
+          ) : (
+            <MovieList movies={movies} setSelectedMovie={handelSelectMovieId} />
+          )}
         </BoxComponent>
         <BoxComponent>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
+          {selectedMovieId ? (
+            <MovieDetails
+              selectedMovieId={selectedMovieId}
+              handelCloseMovieDetails={handelCloseMovieDetails}
+              handelSetWatched={handelSetWatched}
+              watched={watched}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMovieList
+                watched={watched}
+                handelDeleteWatchedMovie={handelDeleteWatchedMovie}
+              />
+            </>
+          )}
         </BoxComponent>
       </Main>
     </>

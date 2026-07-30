@@ -3,12 +3,20 @@ import WatchedMovie from "./WatchedMovie";
 
 interface WatchedMoviesProps {
   watched: IWatchedMovie[];
+  handelDeleteWatchedMovie: (id: string) => void;
 }
-function WatchedMovieList({ watched }: WatchedMoviesProps) {
+function WatchedMovieList({
+  watched,
+  handelDeleteWatchedMovie,
+}: WatchedMoviesProps) {
   return (
     <ul className="list">
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} key={movie.imdbID} />
+        <WatchedMovie
+          movie={movie}
+          key={movie.imdbID}
+          handelDeleteWatchedMovie={handelDeleteWatchedMovie}
+        />
       ))}
     </ul>
   );
