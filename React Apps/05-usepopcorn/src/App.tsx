@@ -17,7 +17,9 @@ import IWatchedMovie from "./Interfaces/IWatchedMovie";
 const KEY = "d2823662";
 function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState<IWatchedMovie[]>([]);
+  const [watched, setWatched] = useState<IWatchedMovie[]>(() =>
+    JSON.parse(localStorage.getItem("WatchedMovie") ?? "[]"),
+  );
   const [query, setQuery] = useState("Batman");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -33,6 +35,9 @@ function App() {
   function handelSetWatched(movie: IWatchedMovie) {
     setWatched((watched) => [...watched, movie]);
   }
+  useEffect(() => {
+    localStorage.setItem("WatchedMovie", JSON.stringify(watched));
+  }, [watched]);
 
   function handelDeleteWatchedMovie(id: string) {
     setWatched((watched) => watched.filter((m) => m.imdbID !== id));
