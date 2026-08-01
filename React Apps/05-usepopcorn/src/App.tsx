@@ -20,7 +20,7 @@ function App() {
   const [watched, setWatched] = useState<IWatchedMovie[]>(() =>
     JSON.parse(localStorage.getItem("WatchedMovie") ?? "[]"),
   );
-  const [query, setQuery] = useState("Batman");
+  const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
