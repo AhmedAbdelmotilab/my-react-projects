@@ -1,30 +1,41 @@
-import { useTasksStore, type TaskData } from "../store/TasksStore";
-interface TaskProp {
-  t: TaskData;
+import { useTasksStore, type TaskObj } from "../store/TasksStore";
+
+interface TaskProps {
+  task: TaskObj;
 }
-function Task({ t }: TaskProp) {
+function Task({ task }: TaskProps) {
   const setDeleteTask = useTasksStore((state) => state.setDeleteTask);
-  const setDoneTask = useTasksStore((state) => state.setDoneTask);
+  const setIsUpdate = useTasksStore((state) => state.setIsUpdate);
+  const setIsDone = useTasksStore((state) => state.setIsDone);
+  const title = useTasksStore((state) => state.title);
+  const setTitle = useTasksStore((state) => state.setTitle);
+  function handelSelectTask() {
+    setTitle(task.title);
+  }
+  function handelUpdateTask() {
+    if (!title) return;
+    setIsUpdate(task.id, title);
+    setTitle("");
+  }
   return (
     <li className="task-item">
-      <label className="task-label">
-        <input type="checkbox"></input>
-        <span
-          className="task-text"
-          style={{ textDecoration: `${t.isDone ? "line-through" : ""}` }}
-        >
-          {t.title}
+      <input type="checkbox" onChange={() => setIsDone(task.id)}></input>
+      <label
+        className="task-label"
+        style={task.isDone ? { textDecoration: "line-through" } : {}}
+      >
+        <span className="task-text" onClick={handelSelectTask}>
+          {task.title}
         </span>
       </label>
       <div className="task-actions">
-        <button
-          className="btn btn-update"
-          onClick={() => setDoneTask(t.id)}
-          style={{ textDecoration: `${t.isDone ? "line-through" : ""}` }}
-        >
-          Done
+        <button className="btn btn-update" onClick={handelUpdateTask}>
+          Update
         </button>
-        <button className="btn btn-delete" onClick={() => setDeleteTask(t.id)}>
+        <button
+          className="btn btn-delete"
+          onClick={() => setDeleteTask(task.id)}
+        >
           Delete
         </button>
       </div>

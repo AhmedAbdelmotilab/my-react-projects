@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { useTasksStore } from "../store/TasksStore";
 
 function AddTaskForm() {
-  const [title, setTitle] = useState("");
+  const title = useTasksStore((state) => state.title);
+  const setTitle = useTasksStore((state) => state.setTitle);
   const setTasks = useTasksStore((state) => state.setTasks);
-  function handelSetTasks() {
+  function handelAddTask() {
+    if (!title) return;
     setTasks(title);
     setTitle("");
   }
@@ -17,7 +18,7 @@ function AddTaskForm() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       ></input>
-      <button className="btn btn-add" onClick={handelSetTasks}>
+      <button className="btn btn-add" onClick={handelAddTask}>
         Add Task
       </button>
     </div>

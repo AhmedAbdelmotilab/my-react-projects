@@ -3,10 +3,11 @@ import Task from "./Task";
 
 function TasksList() {
   const tasks = useTasksStore((state) => state.tasks);
+
   return (
-    <ul className="task-list">
+    <ul>
       {tasks.map((task) => (
-        <Task key={task.id} t={task} />
+        <Task key={task.id} task={task} />
       ))}
     </ul>
   );
