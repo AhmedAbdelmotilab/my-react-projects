@@ -1,10 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import AppReducer from "./components/Reducer/AppReducer";
+import AppZustand from "./components/Zustand/AppZustand";
+import "./index.css";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <AppZustand />
+    <AppReducer />
   </StrictMode>,
-)
+);
