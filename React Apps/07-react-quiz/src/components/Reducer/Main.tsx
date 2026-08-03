@@ -1,3 +1,6 @@
-export default function Main() {
-  return <main className="main"></main>;
+interface MainProps {
+  children: React.ReactNode;
+}
+export default function Main({ children }: MainProps) {
+  return <main className="main">{children}</main>;
 }

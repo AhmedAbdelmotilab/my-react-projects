@@ -58,6 +58,25 @@ body {
   border-radius: 100px;
 }
 
+.finished {
+  text-align: center;
+  padding: 2.4rem;
+  background-color: var(--color-dark);
+  border-radius: 1rem;
+  border: 1px solid var(--color-medium);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.finished h2 {
+  margin-bottom: 1rem;
+}
+
+.finished p {
+  font-size: 1.8rem;
+  margin-bottom: 1.6rem;
+}
+
 img {
   width: 14rem;
 }
