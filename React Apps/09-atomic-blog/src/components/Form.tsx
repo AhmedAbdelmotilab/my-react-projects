@@ -1,5 +1,5 @@
 import { useState, type SyntheticEvent } from "react";
-import { usePostsStore } from "../store/usePostsStore";
+import { usePostsStore } from "../stores/usePostsStore";
 
 export function FormAddPost() {
   const { setPosts } = usePostsStore();

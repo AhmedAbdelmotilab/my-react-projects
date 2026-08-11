@@ -1,4 +1,4 @@
-import { usePostsStore } from "../store/usePostsStore";
+import { usePostsStore } from "../stores/usePostsStore";
 
 export function Results() {
   const { posts } = usePostsStore();

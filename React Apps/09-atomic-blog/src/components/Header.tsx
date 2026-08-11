@@ -1,4 +1,4 @@
-import { usePostsStore } from "../store/usePostsStore";
+import { usePostsStore } from "../stores/usePostsStore";
 import { Results } from "./Results";
 import { SearchPosts } from "./Search";
 

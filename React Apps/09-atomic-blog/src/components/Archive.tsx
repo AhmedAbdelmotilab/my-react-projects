@@ -1,4 +1,4 @@
-import { usePostsStore } from "../store/usePostsStore";
+import { usePostsStore } from "../stores/usePostsStore";
 
 export function Archive() {
   const { archivedPosts, setPosts, showArchive, setShowArchive } = usePostsStore();
