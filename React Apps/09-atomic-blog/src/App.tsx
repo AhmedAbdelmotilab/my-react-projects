@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Archive } from "./components/Archive";
+import Archive from "./components/Archive";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Main } from "./components/Main";

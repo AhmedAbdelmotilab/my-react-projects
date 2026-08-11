@@ -25,7 +25,7 @@ export const usePostsStore = create(
         body: faker.hacker.phrase(),
       };
     }),
-    archivedPosts: Array.from({ length: 300 }, function createRandomPost() {
+    archivedPosts: Array.from({ length: 30000 }, function createRandomPost() {
       return {
         title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
         body: faker.hacker.phrase(),
