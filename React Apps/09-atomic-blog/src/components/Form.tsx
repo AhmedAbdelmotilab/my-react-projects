@@ -2,7 +2,7 @@ import { useState, type SyntheticEvent } from "react";
 import { usePostsStore } from "../stores/usePostsStore";
 
 export function FormAddPost() {
-  const { setPosts } = usePostsStore();
+  const setPosts = usePostsStore((state) => state.setPosts);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");

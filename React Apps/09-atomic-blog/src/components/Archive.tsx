@@ -1,7 +1,6 @@
-import { memo } from "react";
 import { usePostsStore } from "../stores/usePostsStore";
 
-const Archive = memo(function Archive() {
+export default function Archive() {
   const archivedPosts = usePostsStore((state) => state.archivedPosts);
   const showArchive = usePostsStore((state) => state.showArchive);
   const setShowArchive = usePostsStore((state) => state.setShowArchive);
@@ -26,5 +25,4 @@ const Archive = memo(function Archive() {
       )}
     </aside>
   );
-});
-export default Archive;
+}

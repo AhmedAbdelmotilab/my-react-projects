@@ -3,7 +3,7 @@ import { Results } from "./Results";
 import { SearchPosts } from "./Search";
 
 export function Header() {
-  const { clearPosts } = usePostsStore();
+  const clearPosts = usePostsStore((state) => state.clearPosts);
   return (
     <header>
       <h1>
